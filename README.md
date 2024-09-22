@@ -32,6 +32,6 @@ $ kubectl apply -f deployments/k6.yaml
 
 ## Architecture
 
-<img src="fig/demo-architecture.png" width=auto height="350">
+<img src="fig/demo-architecture.png" width="300" height=auto>
 
 ## Output
