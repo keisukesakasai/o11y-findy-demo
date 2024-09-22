@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k6-script
+data:
+  script.js: |
+    import { sleep } from 'k6';
+    import http from 'k6/http';
+
+    const baseEndpoints = ['http://app-service-v1:8080', 'http://app-service-v2:8080'];
+
+    export const options = {
+      scenarios: {
+        load_test: {
+          executor: 'constant-arrival-rate',
+          rate: 1,
+          timeUnit: '1s',
+          duration: '10m',
+          preAllocatedVUs: 1,
+          maxVUs: 1,
+        },
+      },
+    };
+
+    let endpointIndex = 0;
+
+    export default function () {
+      const baseEndpoint = baseEndpoints[endpointIndex];
+      http.get(baseEndpoint);
+      endpointIndex = (endpointIndex + 1) % baseEndpoints.length;
+      sleep(1);
+    }

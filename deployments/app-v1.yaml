@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v1
+  labels:
+    app: app-v1
+    tags.datadoghq.com/env: "prod"
+    tags.datadoghq.com/service: "app"
+    tags.datadoghq.com/version: "v1.0.0"       
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-v1
+  template:
+    metadata:
+      labels:
+        app: app-v1
+        admission.datadoghq.com/enabled: "true"     
+        tags.datadoghq.com/env: "prod"
+        tags.datadoghq.com/service: "app"
+        tags.datadoghq.com/version: "v1.0.0"
+    spec:
+      containers:
+        - name: app-v1
+          image: ghcr.io/keisukesakasai/o11y-findy-demo:v1
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:  
+            - name: NUM_RUNDOM_DATA
+              value: "1000000"
+            - name: DD_ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/env']
+            - name: DD_SERVICE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/service']
+            - name: DD_VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/version']
+            - name: DD_TRACE_SAMPLE_RATE
+              value: "1"              
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 50m
+              memory: 100Mi          
+          volumeMounts:                  # ボリュームマウントのセクションを追加
+            - name: config-volume
+              mountPath: /root/data 
+            - name: apmsocketpath
+              mountPath: /var/run/datadog              
+      volumes:                          # volumes セクションを追加
+        - name: config-volume
+          configMap:
+            name: inputdata
+            items:
+            - key: input.txt
+              path: input.txt
+        - hostPath:
+            path: /var/run/datadog/
+          name: apmsocketpath              
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service-v1
+spec:
+  selector:
+    app: app-v1
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
