@@ -35,3 +35,11 @@ $ kubectl apply -f deployments/k6.yaml
 <img src="fig/demo-architecture.png" width="600" height=auto>
 
 ## Output
+### profile of the v1 app
+<img src="fig/v1.png" width="600" height=auto>
+
+### profile of the v2 app
+<img src="fig/v2.png" width="600" height=auto>
+
+### diff v2 based v1
+<img src="fig/diff_v1_v2.png" width="600" height=auto>

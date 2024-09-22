@@ -15,7 +15,7 @@ data:
           executor: 'constant-arrival-rate',
           rate: 1,
           timeUnit: '1s',
-          duration: '10m',
+          duration: '10000m',
           preAllocatedVUs: 1,
           maxVUs: 1,
         },
