@@ -1,8 +1,10 @@
 ## Overview
 
-オブザーバビリティ実践までの道のり〜各社の課題とアプローチ方法とは？〜 Lunch LT で使うデモ用のリポジトリです。
+[オブザーバビリティ実践までの道のり〜各社の課題とアプローチ方法とは？〜 Lunch LT](https://findy.connpass.com/event/328935/) で使うデモ用のリポジトリです。
 
-https://findy.connpass.com/event/328935/
+発表スライドは以下です。
+
+https://speakerdeck.com/k6s4i53rx/getting-started-profile-o11y
 
 ※ 注意：デモ用のため取り扱いには注意してください。
 
